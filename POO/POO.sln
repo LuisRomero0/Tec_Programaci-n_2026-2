@@ -7,7 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POO", "POO.csproj", "{FC52C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{D107F4C8-89CC-BEA8-D3D7-CA6B7733353D}"
 	ProjectSection(SolutionItems) = preProject
+		Calculadora.cs = Calculadora.cs
+		CodigoRectangulos.cs = CodigoRectangulos.cs
 		Persona.cs = Persona.cs
+		PrincipalRectangulo.cs = PrincipalRectangulo.cs
 	EndProjectSection
 EndProject
 Global
