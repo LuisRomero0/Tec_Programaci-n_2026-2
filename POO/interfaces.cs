@@ -103,7 +103,7 @@ public interface IVolar
     void Volar();
 }
 
-public class Dragon : Animal, IVolar
+public class Dragon : IAnimal, IVolar
 {
     public void Volar()
     { }

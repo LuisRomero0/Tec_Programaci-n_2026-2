@@ -7,16 +7,66 @@ List <IPAGO> list = new List<IPAGO> ();
 do
 {
     Console.WriteLine("Ingresa el monto a pagar:")
-    try 
+    string montoTexto = Console.ReadLine() ?? "";
+    if (double.TryParse(montoTexto, out double monto))
     {
-        string montoTexto = Console.ReadLine() ?? "";  
-        
-    }
-    catch 
-    { 
+        string modoPagoT;
+        int modoPago;
+
+        do
+        {
+            Console.WriteLine("1- Pago con tarjeta");
+            Console.WriteLine("2- Pago en efectivo");
+
+            modoPagoT = Console.ReadLine() ?? "";
+
+        } while (!int.TryParse(modoPagoT, out int modoPago) || (modoPago != 1 && modoPago != 2));
     
+            if (modoPago == 1)
+            {
+                Console.WriteLine("Ingresa el numero de tarjeta:");
+                string tarjeta = Console.ReadLine() ?? "";
+
+                // CREANDO OBJETO PARA PAGO CON TARJETA
+
+                IPAGO pago = new PagoTarjeta(tarjeta, monto);
+                listaPagos.Add(pago);
+            }
+            else 
+            {
+                // CREANDO OBJETO PARA PAGO EN EFECTIVO
+
+                IPAGO pago = new PagoEfectivo(monto);
+                listaPagos.Add(pago);
+            }
+
     }
+    else
+    {
+        Console.WriteLine("Error monto invalido");
+        return; 
+    }
+
+    Console.WriteLine("Presiona S para procesar más pagos:");
+    char continuaT = char.Parse(Console.ReadLine() ?? "");
+
+    if ( continuaT == 's')
+    {
+        continua = true;
+    }
+    else
+    {
+        continua = false;
+    }
+
 } while (continua);
+
+
+
+foreach (IPAGO pago in listaPagos)
+{
+    pago.ProcesarPago();
+}
 
 
 
