@@ -1,4 +1,4 @@
-﻿// PROGRAMA PRINCIPAL DE DISPOSITIVOS ELECTRONICOS
+// PROGRAMA PRINCIPAL
 
 Altavoz altavoz = new Altavoz();
 Lampara lampara = new Lampara();
@@ -6,29 +6,30 @@ Ventilador ventilador = new Ventilador(false);
 
 altavoz.Encender();
 altavoz.MostrarEstado();
-// corregir
+
+List<IDispositivoInteligente> dispositivos = new List<IDispositivoInteligente> { lampara, ventilador, altavoz };
 
 // INTERFAZ Y CLASES
 
-public interface IDispositivos
+public interface IDispositivoInteligente
 {
     void Encender();
     void Apagar();
     void MostrarEstado();
 }
 
-
-// Clase de pago en efectivo
-
-public class Lampara : IDispositivos
+public class Lampara : IDispositivoInteligente
 {
     // ATRIBUTO
     public bool EstaEncendido { get; set; }
-    public int SubirIntensidadLuz { get; set; }
-    public int BajarIntensidadLuz { get; set; }
+    public int IntensidadLuz { get; set; } 
 
     // Constructor 
-
+    public Lampara() 
+    {
+        EstaEncendido = false;
+        IntensidadLuz = 50;
+    }
 
     // Metodos
     public void Encender()
@@ -43,84 +44,61 @@ public class Lampara : IDispositivos
         Console.WriteLine("La lámpara está apagada.");
     }
 
-    public void SubirIntensidadLuz(int nivel = 0)
+    public void SubirIntensidadLuz(int nivel)
     {
-        if (EstaEncendido = true)
+        if (EstaEncendido == true) 
         {
-            AumentarIntensidadLuz = nivel + 1;
+            IntensidadLuz = nivel + 1;
         }
         else
         {
-            Console.WriteLine("La lámpara está apagada. No se puede ajustar la intensidad de luz.");
+            Console.WriteLine("La lámpara está apagada. No se puede ajustar la intensidad.");
         }
+    }
 
-    public void BajarIntensidadLuz(int nivel = 0)
+    public void BajarIntensidadLuz(int nivel)
     {
-        if (EstaEncendido = true)
+        if (EstaEncendido == true) 
         {
-            DisminuirIntensidadLuz = nivel - 1;
+            IntensidadLuz = nivel - 1;
         }
         else
         {
-            Console.WriteLine("La lámpara está apagada. No se puede ajustar la intensidad de luz.");
+            Console.WriteLine("La lámpara está apagada. No se puede ajustar la intensidad.");
         }
-
-
     }
 
     public void MostrarEstado()
     {
-        if (EstaEncendido = true)
+        if (EstaEncendido == true)
         {
-            Console.WriteLine("La lámpara está encendida.");
+            Console.WriteLine($"La lámpara está encendida emitiendo luz con intensidad {IntensidadLuz}.");
         }
         else
         {
             Console.WriteLine("La lámpara está apagada.");
         }
-
-        if (EstaEncendido)
-        {
-            Console.WriteLine($"La lámpara está emitiendo luz con intensidad {nivel}.");
-        }
-        else
-        {
-            Console.WriteLine("La lámpara está apagada. No se puede ajustar la intensidad de luz.");
-        }
-
-
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-public class Ventilador : IDispositivos
+public class Ventilador : IDispositivoInteligente
 {
     // aTRIBUTO
     public bool EstaEncendido { get; set; }
-    public int AumentarVelocidad { get; set; }
-    public int DisminuirVelocidad { get; set; }
+    public int Velocidad { get; set; }
 
     // Constructor 
     public Ventilador(bool EstaEncendido)
-        {
+    {
         this.EstaEncendido = EstaEncendido;
-        }   
+        this.Velocidad = 0;
+    }   
 
     // Metodos
     public void Encender()
-        {
-            EstaEncendido = true;
-            Console.WriteLine("El ventilador está encendido.");
+    {
+        EstaEncendido = true;
+        Console.WriteLine("El ventilador está encendido.");
     }
 
     public void Apagar()
@@ -129,59 +107,41 @@ public class Ventilador : IDispositivos
         Console.WriteLine("El ventilador está apagado.");
     }  
     
-    public void AumentarVelocidad(int velocidad = 0)
-        {
-            if (EstaEncendido = true)
-            {
-                AumentarVelocidad = velocidad + 1;
-            }
-            else
-            {
-                Console.WriteLine("El ventilador está apagado. No se puede ajustar la velocidad a la que gira.");
-            }
-    }
-
-    public int DisminuirVelocidad(int velocidad = 0)
+    public void AumentarVelocidad(int velocidad)
     {
-        if (EstaEncendido = true)
+        if (EstaEncendido == true)
         {
-            DisminuirVelocidad = velocidad - 1;
+            Velocidad = velocidad + 1;
         }
         else
         {
-            Console.WriteLine("El ventilador está apagado. No se puede ajustar la velocidad a la que gira.");
+            Console.WriteLine("El ventilador está apagado.");
         }
-        return DisminuirVelocidad;      // corregir
+    }
+
+    public void DisminuirVelocidad(int velocidad)
+    {
+        if (EstaEncendido == true)
+        {
+            Velocidad = velocidad - 1;
+        }
+        else
+        {
+            Console.WriteLine("El ventilador está apagado.");
+        }
     }
 
     public void MostrarEstado()
     {
         string estado = EstaEncendido ? "encendido" : "apagado";
-        Console.WriteLine($"El ventilador está {estado}.");
+        Console.WriteLine($"El ventilador está {estado} a velocidad {Velocidad}.");
     }
-
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-public class Altavoz : IDispositivos
+public class Altavoz : IDispositivoInteligente
 {
     // aTRIBUTO
     public bool EstaEncendido { get; private set; }
-
-    // Constructor 
-
 
     // Metodos
     public void Encender()
@@ -200,11 +160,11 @@ public class Altavoz : IDispositivos
     {
         if (EstaEncendido)
         {
-            Console.WriteLine($"El altavoz está reproduciendo la canción: {cancion}.");
+            Console.WriteLine($"El altavoz está reproduciendo: {cancion}.");
         }
         else
         {
-            Console.WriteLine("El altavoz está apagado. No se puede reproducir música.");
+            Console.WriteLine("El altavoz está apagado.");
         }
     }
 
@@ -214,12 +174,3 @@ public class Altavoz : IDispositivos
         Console.WriteLine($"El altavoz está {estado}.");
     }
 }
-
-
-
-
-// corregir mostrar estado de todos 
-// checar el constructor de todos
-// checar lo de crear lista 
-
-List <IDispositivos> dispositivos = new List<IDispositivos>( lampara,ventilador, altavoz ); // ??
