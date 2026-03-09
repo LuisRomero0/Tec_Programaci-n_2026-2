@@ -4,8 +4,29 @@ Altavoz altavoz = new Altavoz();
 Lampara lampara = new Lampara();
 Ventilador ventilador = new Ventilador(false);
 
+Console.WriteLine("Datos de la lampara");
+lampara.Encender();
+lampara.MostrarEstado();
+lampara.SubirIntensidadLuz();
+lampara.MostrarEstado();
+lampara.BajarIntensidadLuz();
+lampara.MostrarEstado();
+
+Console.WriteLine("Datos del ventilador");
+ventilador.Encender();
+ventilador.MostrarEstado();
+ventilador.AumentarVelocidad();
+ventilador.MostrarEstado();
+ventilador.DisminuirVelocidad();
+ventilador.MostrarEstado();
+
+Console.WriteLine("Datos del Altavoz");
 altavoz.Encender();
 altavoz.MostrarEstado();
+altavoz.Apagar();
+altavoz.ReproducirMusica();
+
+
 
 List<IDispositivoInteligente> dispositivos = new List<IDispositivoInteligente> { lampara, ventilador, altavoz };
 
