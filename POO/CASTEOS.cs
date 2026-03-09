@@ -43,11 +43,19 @@ Animal miAnimal = new Perro();
 
 // Down casting Padre - Hijo
 
-/*miAnimal animal = new Animal()
-Perro perro = (Perro)new Animal();
-perro.Ladrar();*/
+Animal animal = new Animal()
 
-object obj = miAnimal();
+//Perro perro = (Perro)new Animal();
+//animal as Perro();
+//perro.Ladrar();
+
+    if (animal is Perro)
+    {
+        Console.WriteLine("Es un perro");
+    }
+
+object obj = "cadena"
+string texto5= obj as string;
 Console.WriteLine(obj);
 
 
