@@ -8,13 +8,45 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ARREGLOS.cs" />
+    <Compile Remove="Auto.cs" />
+    <Compile Remove="Calculadora.cs" />
+    <Compile Remove="CASTEOS.cs" />
+    <Compile Remove="CodigoRectangulos.cs" />
+    <Compile Remove="CompetenciasDeportivas.cs" />
+    <Compile Remove="Dispostivos .cs" />
+    <Compile Remove="EjercicioBanco.cs" />
+    <Compile Remove="EjercicioListas.cs" />
+    <Compile Remove="EjercicioMisiónEspacial.cs" />
+    <Compile Remove="Excepciones.cs" />
+    <Compile Remove="IDispositivos.cs" />
+    <Compile Remove="interfaces.cs" />
+    <Compile Remove="Persona.cs" />
     <Compile Remove="PrincipalRectangulo.cs" />
     <Compile Remove="Program.cs" />
+    <Compile Remove="SisPagosCasteos.cs" />
+    <Compile Remove="VideoJuego.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ARREGLOS.cs" />
+    <None Include="Auto.cs" />
+    <None Include="Calculadora.cs" />
+    <None Include="CASTEOS.cs" />
+    <None Include="CodigoRectangulos.cs" />
+    <None Include="CompetenciasDeportivas.cs" />
+    <None Include="Dispostivos .cs" />
+    <None Include="EjercicioBanco.cs" />
+    <None Include="EjercicioListas.cs" />
+    <None Include="EjercicioMisiónEspacial.cs" />
+    <None Include="Excepciones.cs" />
+    <None Include="IDispositivos.cs" />
+    <None Include="interfaces.cs" />
+    <None Include="Persona.cs" />
     <None Include="PrincipalRectangulo.cs" />
     <None Include="Program.cs" />
+    <None Include="SisPagosCasteos.cs" />
+    <None Include="VideoJuego.cs" />
   </ItemGroup>
 
 </Project>
