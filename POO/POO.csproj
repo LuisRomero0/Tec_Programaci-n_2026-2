@@ -24,6 +24,7 @@
     <Compile Remove="Persona.cs" />
     <Compile Remove="PrincipalRectangulo.cs" />
     <Compile Remove="Program.cs" />
+    <Compile Remove="RegistroLibros.cs" />
     <Compile Remove="SisPagosCasteos.cs" />
     <Compile Remove="VideoJuego.cs" />
   </ItemGroup>
@@ -45,6 +46,7 @@
     <None Include="Persona.cs" />
     <None Include="PrincipalRectangulo.cs" />
     <None Include="Program.cs" />
+    <None Include="RegistroLibros.cs" />
     <None Include="SisPagosCasteos.cs" />
     <None Include="VideoJuego.cs" />
   </ItemGroup>

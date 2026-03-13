@@ -126,6 +126,7 @@ public class LibroFiccion : Libro
     }
 }
 
+
 public class LibroTecnico: Libro
 {
     // Variable de clase 
