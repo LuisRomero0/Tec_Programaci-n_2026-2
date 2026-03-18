@@ -26,6 +26,7 @@
     <Compile Remove="Program.cs" />
     <Compile Remove="RegistroLibros.cs" />
     <Compile Remove="SisPagosCasteos.cs" />
+    <Compile Remove="TirosBillar.cs" />
     <Compile Remove="VideoJuego.cs" />
   </ItemGroup>
 
@@ -48,7 +49,20 @@
     <None Include="Program.cs" />
     <None Include="RegistroLibros.cs" />
     <None Include="SisPagosCasteos.cs" />
+    <None Include="TirosBillar.cs" />
     <None Include="VideoJuego.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BibliotecaDeLibros">
+      <HintPath>..\BibliotecaDeLibros\bin\Debug\net8.0\BibliotecaDeLibros.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtensionesBiblioteca">
+      <HintPath>..\ExtensionesBiblioteca\bin\Debug\net8.0\ExtensionesBiblioteca.dll</HintPath>
+    </Reference>
+    <Reference Include="ValidacionesBiblioteca">
+      <HintPath>..\ValidacionesBiblioteca\bin\Debug\net8.0\ValidacionesBiblioteca.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
