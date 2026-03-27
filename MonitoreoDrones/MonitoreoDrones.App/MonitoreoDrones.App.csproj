@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MonitoreoDrones.Dominio\MonitoreoDrones.Dominio.csproj" />
+    <ProjectReference Include="..\MonitoreoDrones.Extensiones\MonitoreoDrones.Extensiones.csproj" />
+    <ProjectReference Include="..\MonitoreoDrones.Utilidades\MonitoreoDrones.Utilidades.csproj" />
+  </ItemGroup>
+
 </Project>
