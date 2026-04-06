@@ -1,4 +1,57 @@
-﻿// Clase que representa Estudiantes
+﻿// Programa principal 
+
+Estudiante estudiante  = new Estudiante
+{
+    Id = 1,
+    Nombre = "Pancho Villa",
+    Edad = 20,
+    Calificacion = 85.5
+};
+
+Console.WriteLine(estudiante);
+Console.WriteLine(estudiante.ToString());
+
+// Configuracion inicial 
+string archivoEstudiantes = "estudiantes.txt";
+GestorEstudiantes gestor = new GestorEstudiantes(archivoEstudiantes);
+
+// Crear una lista de estudiantes
+List<Estudiante> estudiantes = new List<Estudiante>
+{
+    new Estudiante { Id = 1, Nombre = "Diego Garcia", Edad = 22, Calificacion = 6.0 },
+    new Estudiante { Id = 2, Nombre = "Luis Romero", Edad = 21, Calificacion = 7.8 },
+    new Estudiante { Id = 3, Nombre = "Elias Vasquez", Edad = 20, Calificacion = 8.0 },
+    new Estudiante { Id = 4, Nombre = "Bruno Lopez", Edad = 20, Calificacion = 5.0 },
+    new Estudiante { Id = 5, Nombre = "Dario Pineda", Edad = 20, Calificacion = 8.1 }
+};
+
+// Guardar la lista de estudiantes en el archivo
+Console.WriteLine("Guardando estudiantes en el archivo...");
+gestor.GuardarEstudiantes(estudiantes);
+
+
+// Leer todos los estudiantes 
+Console.WriteLine("Leyendo estudiantes desde el archivo...");
+var estudiantesLeidos = gestor.LeerEstudiantes();
+foreach (var estudiant in estudiantesLeidos)
+{
+    Console.WriteLine(estudiant);
+}
+
+// Buscar estudiante por ID
+Console.WriteLine("Buscando estudiante con ID: 4");
+var estudianteEncontrado = gestor.BuscarEstudiantePorId(4);
+if (estudianteEncontrado != null)
+{
+    Console.WriteLine(estudianteEncontrado);
+}
+else
+{
+    Console.WriteLine("Estudiante no encontrado.");
+}
+
+
+// Clase que representa Estudiantes
 
 public class Estudiante
 {
@@ -15,7 +68,7 @@ public class Estudiante
 
     public override string ToString()
     {
-        return $"ID: {Id}, Nombre: {Nombre}, Edad: {Edad}, Calificación: {Calificacion}";
+        return $"{Id},{Nombre},{Edad},{Calificacion}";
     }
 
 
@@ -53,18 +106,86 @@ public class GestorEstudiantes
 
     // Metodos para leer la lista de estudiantes desde un archivo de texto
 
-   /* public List<Estudiante> LeerEstudiantes()
+    public List<Estudiante> LeerEstudiantes()
     {
         List<Estudiante> estudiantesLectura = new List<Estudiante>();
 
         try
         {
-            using (StreamReader reader = new)
+           if (File.Exists(rutaArchivo))
+            {
+                using (StreamReader reader = new StreamReader(rutaArchivo))
+                {
+                    string lineaLectura;
+
+                    while ((lineaLectura = reader.ReadLine()) != null)
+                        //Dividimos la linea por las comas
+                    {
+                        string[] datos = lineaLectura.Split(',');
+
+                        if (datos.Length == 4)
+                        {
+                            estudiantesLectura.Add(new Estudiante
+                            {
+                                Id = int.Parse(datos[0]),
+                                Nombre = datos[1],
+                                Edad = int.Parse(datos[2]),
+                                Calificacion = double.Parse(datos[3])
+                            });
+                        }
+                    }
+                }
+
+                Console.WriteLine("Estudiantes leídos exitosamente.");
+            }
+            else
+            {
+                Console.WriteLine("El archivo no existe.");
+            }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
-    }*/
+        return estudiantesLectura;
+    }
 
+
+    // METODO PARA BUSCAR ESTUDIANTE MEDIANTE UN ID
+
+    public Estudiante BuscarEstudiantePorId(int id)
+    {
+        try
+        {
+            if (File.Exists(rutaArchivo))
+            {
+                using (StreamReader reader = new StreamReader(rutaArchivo))
+                {
+                    string lineaLectura;
+
+                    while ((lineaLectura = reader.ReadLine()) != null)
+                    //Dividimos la linea por las comas
+                    {
+                        string[] datos = lineaLectura.Split(',');
+
+                        if (datos.Length == 4 && int.Parse(datos[0]) == id)
+                        {
+                            return new Estudiante
+                            {
+                                Id = int.Parse(datos[0]),
+                                Nombre = datos[1],
+                                Edad = int.Parse(datos[2]),
+                                Calificacion = double.Parse(datos[3])
+                            };
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return null; // Retorna null si no se encuentra el estudiante
+    }
 }

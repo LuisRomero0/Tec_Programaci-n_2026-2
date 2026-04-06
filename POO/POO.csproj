@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Remove="AccesoBiblioteca.cs" />
+    <Compile Remove="archivos.cs" />
     <Compile Remove="ARREGLOS.cs" />
     <Compile Remove="Auto.cs" />
     <Compile Remove="Calculadora.cs" />
@@ -33,6 +34,7 @@
 
   <ItemGroup>
     <None Include="AccesoBiblioteca.cs" />
+    <None Include="archivos.cs" />
     <None Include="ARREGLOS.cs" />
     <None Include="Auto.cs" />
     <None Include="Calculadora.cs" />
