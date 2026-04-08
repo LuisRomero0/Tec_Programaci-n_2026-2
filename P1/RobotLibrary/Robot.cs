@@ -1,20 +1,20 @@
-﻿namespace RobotLibrary
+﻿
+namespace RobotLibrary
 {
-
-
-
     // Atributos 
     public class Robot
     {
         public float Peso { get; set; }
         public string Modelo { get; set; }
         public bool Estado { get; set; }
-        public int EnergiaDisponible 
+        public int EnergiaDisponible
         {
 
-            get { return EnergiaDisponible; }  
-    
-            set {if (value < 0)
+            get { return EnergiaDisponible; }
+
+            set
+            {
+                if (value < 0)
                 {
                     Console.WriteLine("La energía no puede ser negativa. Se establece a 0.");
                     EnergiaDisponible = 0;
@@ -29,7 +29,7 @@
                     EnergiaDisponible = value;
                 }
             }
-        }  
+        }
 
         // Constructor
         public Robot(float peso, string modelo, bool estado, int energiaDisponible)
@@ -111,7 +111,7 @@
     {
         // Atributos adicionales para RobotMovil
         public float Velocidad { get; set; }
-        public string Direccion { get; set; } 
+        public string Direccion { get; set; }
         public int MotorIzquierdo { get; set; }
         public int MotorDerecho { get; set; }
         public bool SensorUltrasonico { get; set; }
@@ -150,41 +150,41 @@
             };
 
             switch (option)
-                {
-                    case "Adelante":
-                        Console.WriteLine($"El robot se mueve hacia adelante a una velocidad de {Velocidad} m/s.");
-                        break;
-                    case "Atras":
-                        Console.WriteLine($"El robot se mueve hacia atrás a una velocidad de {Velocidad} m/s.");
-                        break;
+            {
+                case "Adelante":
+                    Console.WriteLine($"El robot se mueve hacia adelante a una velocidad de {Velocidad} m/s.");
+                    break;
+                case "Atras":
+                    Console.WriteLine($"El robot se mueve hacia atrás a una velocidad de {Velocidad} m/s.");
+                    break;
 
-                    default:
-                        Console.WriteLine("Dirección desconocida.");
-                        break;
-                }
-
-
-                Console.WriteLine($"El robot se mueve hacia {Direccion} a una velocidad de {Velocidad} m/s.");
-                // Metodo para consumir energía basado en la velocidad
-                switch (velocidad)
-                {
-                    case > 0.0f and < 25.0f:
-                        ConsumirEnergia(5);
-                        break;
-                    case >= 25.0f and < 50.0f:
-                        ConsumirEnergia(10);
-                        break;
-                    case >= 50.0f and < 75.0f:
-                        ConsumirEnergia(15);
-                        break;
-                    case >= 75.0f and <= 100.0f:
-                        ConsumirEnergia(20);
-                        break;
-                    default:
-                        Console.WriteLine($"Velocidad fuera de rango o detenida: {velocidad} m/s.");
-                        break;
-                }
+                default:
+                    Console.WriteLine("Dirección desconocida.");
+                    break;
             }
+
+
+            Console.WriteLine($"El robot se mueve hacia {Direccion} a una velocidad de {Velocidad} m/s.");
+            // Metodo para consumir energía basado en la velocidad
+            switch (velocidad)
+            {
+                case > 0.0f and < 25.0f:
+                    ConsumirEnergia(5);
+                    break;
+                case >= 25.0f and < 50.0f:
+                    ConsumirEnergia(10);
+                    break;
+                case >= 50.0f and < 75.0f:
+                    ConsumirEnergia(15);
+                    break;
+                case >= 75.0f and <= 100.0f:
+                    ConsumirEnergia(20);
+                    break;
+                default:
+                    Console.WriteLine($"Velocidad fuera de rango o detenida: {velocidad} m/s.");
+                    break;
+            }
+        }
 
         public void Detener()
         {
@@ -195,7 +195,7 @@
         }
 
         public void GiroPorDiferencia(string direccion)
-        {         
+        {
             if (!Estado)
             {
                 Console.WriteLine("El robot está apagado. Enciéndelo para realizar un giro.");

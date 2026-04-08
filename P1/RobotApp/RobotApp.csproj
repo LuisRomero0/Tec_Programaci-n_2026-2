@@ -8,11 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Robot.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Robot.cs" />
+    <ProjectReference Include="..\RobotLibrary\RobotLibrary.csproj" />
   </ItemGroup>
 
 </Project>
