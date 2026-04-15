@@ -1,73 +1,36 @@
-﻿using RobotLibrary;
-using System.Reflection;
+using System;
+using RobotLibrary;
 
-// Creacion de un robot y prueba de sus funcionalidades
+RobotMovil robot = new RobotMovil(15.0f, "RX-200", false, 95, 1, 1);
 
-RobotMovil robot = new RobotMovil(5.0, "modelo", true, 95, 15.0, "Adelante", 1, 1, 16.0) 
-
-while (true)
+bool salir = false;
+while (!salir)
 {
-    Console.WriteLine("Selecciona una opción:");
-    Console.WriteLine("1. Encender Robot");
-    Console.WriteLine("2. Apagar Robot");
-    Console.WriteLine("3. Mostrar estado");
-    Console.WriteLine("4. Verificar energia");
-    Console.WriteLine("5. Recargar energia");
-    Console.WriteLine("6. Mover adelante");
-    Console.WriteLine("7. Mover atras");
-    Console.WriteLine("8. Giro por diferencia");
-    Console.WriteLine("9. Giro por contrarrotacion");
-    Console.WriteLine("10. Detener Robot");
-    Console.WriteLine("11. Medir distancia con sensor ultrasonico");
-    Console.WriteLine("12. Aumentar velocidad");
-    Console.WriteLine("13. Reducir velocidad");
-    Console.WriteLine("0. Salir");
+    Console.WriteLine("\n--- MENÚ ROBOT MÓVIL ---");
+    Console.WriteLine("1. Encender | 2. Apagar | 3. Estado | 4. Recargar | 5. Mover Adelante");
+    Console.WriteLine("6. Mover Atrás | 7. Giro Diferencia | 8. Detener | 9. Sensor | 0. Salir");
+    Console.Write("Selecciona una opción: ");
 
+    if (!int.TryParse(Console.ReadLine(), out int opcion)) continue;
 
-   /* switch (int.Parse(Console.ReadLine()))
+    switch (opcion)
     {
-
-
-        case 1:
-            robot.Encender();
-            break;
-        case 2:
-            robot.Apagar();
-            break;
-        case 3:
-            robot.MostrarEstado();
-            break;
+        case 1: robot.Encender(); break;
+        case 2: robot.Apagar(); break;
+        case 3: robot.MostrarEstado(); break;
         case 4:
-            robot.VerificarEnergia();
+            Console.Write("Cantidad a recargar: ");
+            if (int.TryParse(Console.ReadLine(), out int cant)) robot.RecargarEnergia(cant);
             break;
-
-        case 5:
-           // Console.WriteLine("Ingrese la cantidad de energía a recargar:");
-           / int cantidad = int.Parse(Console.ReadLine());
-            robot.RecargarEnergia(cantidad);
-            break;
-
-        case 6:
-            //robot.MoverAdelante();
-            break;
-
+        case 5: robot.Mover("Adelante", 20); break;
+        case 6: robot.Mover("Atras", 10); break;
         case 7:
-            robot.MoverAtras();
+            Console.Write("Dirección (Izquierda/Derecha): ");
+            robot.GiroPorDiferencia(Console.ReadLine());
             break;
-
-        case 8:
-            Console.WriteLine("Ingrese la dirección de giro (Izquierda/Derecha):");
-            string direccionGiro = Console.ReadLine();
-            robot.GiroPorDiferencia(direccionGiro);
-            break;
-        case 9:
-           // robot.GiroPorContrarrotacion(direccionGiroContrarrotacion);
-            break;
-        case 10:
-           // robot.Detener();
-            break;
-        case 11:
-           // robot.ObtenerDistanciaSensorUltrasonico();
-            break;
-    }*/
+        case 8: robot.Detener(); break;
+        case 9: robot.ObtenerDistancia(); break;
+        case 0: salir = true; break;
+        default: Console.WriteLine("Opción no válida."); break;
+    }
 }
