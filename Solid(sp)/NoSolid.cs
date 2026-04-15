@@ -1,94 +1,73 @@
-// Un sistema de vacunas en una veterinaria 
+using System;
+using System.Collections.Generic;
 
-public class Mascota
-{
+// PROGRAMA PRINCIPAL
+
+        var servicioEmail = new EmailService();
+        var calculadora = new CalculadoraVeterinaria();
+
+        var sistema = new SistemaVeterinaria(servicioEmail, calculadora);
+
+        var miMascota = new Mascota("Juanito", "Perro", 2);
+        sistema.AtenderMascota(miMascota);
+
+
+
+// Definimos Interfaces Principio D: Inversión de Dependencias
+public interface INotificador {
+    void EnviarNotificacion(string mensaje);
+}
+
+// Clase de Datos pura Principio S: Responsabilidad Única
+public class Mascota {
     public string Nombre { get; set; }
     public string Tipo { get; set; }
-    public int Edad {  get; set; }
+    public int Edad { get; set; }
+    public Mascota(string n, string t, int e) { Nombre = n; Tipo = t; Edad = e; }
+}
 
-    public Mascota (string nombre, string tipo, int edad)
-    {
-        Nombre = nombre;
-        Tipo = tipo;
-        Edad = edad;
-    }
-
-    // La mascota no debería validarse a sí misma.
-    public bool EsValida()
-    {
-        return !string.IsNullOrEmpty(Nombre) && Edad > 0;
-    }
-
-    // Si llega un animal nuevo, hay que modificar esta clase y la lógica de costo debe estar fuera.
-    public decimal CalcularVacuna()
-    {
-        if (Tipo.StartsWith("P")) return 200;
-        if (Tipo.StartsWith("G")) return 180;
-        if (Tipo.Contains("tuga")) return 400;
-
-        return Edad * 50;
+// Clase para Lógica de Cálculos Principio O: Abierto/Cerrado
+public class CalculadoraVeterinaria {
+    public decimal CalcularCosto(Mascota m) {
+        if (m.Tipo.StartsWith("P")) return 200;
+        if (m.Tipo.StartsWith("G")) return 180;
+        return m.Edad * 50;
     }
 }
 
-public class EmailService
-{
-    public void Enviar(string mensaje)
-    {
-        Console.WriteLine($"Enviando correo: {mensaje}");
+// Implementación del Notificado
+public class EmailService : INotificador {
+    public void EnviarNotificacion(string mensaje) {
+        Console.WriteLine($"[EMAIL]: {mensaje}");
     }
 }
 
-public class Notificador
-{
-    // Esto deberia de considerarse una una interfaz.
-    private EmailService email = new EmailService(); 
+// Sistema principal coordinando clases independientes
+public class SistemaVeterinaria {
+    private List<Mascota> _mascotas = new List<Mascota>();
+    private INotificador _notificador; // Dependemos de la interfaz
+    private CalculadoraVeterinaria _calc;
 
-    public void Notificar(Mascota mascota)
-    {
-        // El notificador no debería saber como se calcula la vacuna, solo deberia enviar el texto.
-        email.Enviar($"Mascota info : {mascota.Nombre} | {mascota.CalcularVacuna()}"); 
+    // Recibimos las clases ya listas para usar
+    public SistemaVeterinaria(INotificador notificador, CalculadoraVeterinaria calc) {
+        _notificador = notificador;
+        _calc = calc;
     }
-}
 
-public class SistemaVeterinaria
-{
-    public List<Mascota> mascotas = new List<Mascota>();
-    // El notificador ya deberia estar creado
-    Notificador notificador = new Notificador();
+    public void AtenderMascota(Mascota mascota) {
+        // Validación simple antes de procesar cada mascota que ingrese 
+        if (string.IsNullOrEmpty(mascota.Nombre)) return;
 
-    public virtual void AtenderMascota(string nombre, string tipo, int edad)
-    {
-        var mascota = new Mascota(nombre, tipo, edad);
-
-        if (!mascota.EsValida())
-        {
-            Console.WriteLine("Mascota no se puede registar");
-            return;
-        }
-        mascotas.Add(mascota);
+        _mascotas.Add(mascota);
+        decimal costo = _calc.CalcularCosto(mascota);
         
-        // El método AtenderMascota hace demasiadas cosas como crear, validar, calcular, notificar e imprimir cuando solo deberia llamar a diferentes metodos que hagan eso individualemtne 
-        decimal costo = mascota.CalcularVacuna();
-        notificador.Notificar(mascota);
-
-        Console.WriteLine("Resumen de lista de mascotas | Reporte:");
-        foreach (var m in mascotas)
-        {
-            Console.WriteLine($"{m.Nombre} - {m.Tipo}");
-        }
+        _notificador.EnviarNotificacion($"Mascota: {mascota.Nombre}, Costo: {costo}");
+        
+        MostrarReporte();
     }
-}
 
-public class SistemaVeterinariaEspecial : SistemaVeterinaria
-{
-    public override void AtenderMascota(string nombre, string tipo, int edad)
-    {
-    // Se altera la herencia por que se logra ingresar un perro apesar de que no es aceptado, y eso sucede por los metodo heredados.
-        if(tipo == "Perro")
-        {
-            Console.WriteLine("Los perros no se atienden en este sistema");
-            throw new Exception("Sistema incorrecto");
-        }
-        base.AtenderMascota(nombre, tipo, edad);
+    public void MostrarReporte() {
+        Console.WriteLine("--- Reporte Actualizado ---");
+        _mascotas.ForEach(m => Console.WriteLine($"- {m.Nombre}"));
     }
 }
