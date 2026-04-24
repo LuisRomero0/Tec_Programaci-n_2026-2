@@ -297,7 +297,8 @@ namespace RobotLibrary
         }
 
         // Constructor que llama al constructor de la clase base Robot
-        public RobotMovil(float peso, string modelo, bool estado, int energiaDisponible, float velocidad, string direccion, int motorIzquierdo, int motorDerecho, float sensorUltrasonico)
+        public RobotMovil(float peso, string modelo, bool estado, int energiaDisponible, float velocidad, 
+        string direccion, int motorIzquierdo, int motorDerecho, float sensorUltrasonico)
             : base(peso, modelo, estado, energiaDisponible)
         {
             Velocidad = 0;
