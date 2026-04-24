@@ -9,10 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Estructuras\Arreglos.cs" />
+    <Compile Remove="Estructuras\Cola.cs" />
+    <Compile Remove="Estructuras\Listas.cs" />
+    <Compile Remove="Estructuras\Pilas.cs" />
+    <Compile Remove="NoSolid.cs" />
     <Compile Remove="TemaSolid.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Estructuras\Cola.cs" />
+    <None Include="Estructuras\Pilas.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Estructuras\Arreglos.cs" />
+    <None Include="Estructuras\Listas.cs" />
+    <None Include="NoSolid.cs" />
     <None Include="TemaSolid.cs" />
   </ItemGroup>
 
