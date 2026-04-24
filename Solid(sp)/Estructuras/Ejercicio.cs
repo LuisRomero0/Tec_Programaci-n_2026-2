@@ -44,5 +44,5 @@ public class Banda
         SetCanciones = new Cancion[cantidadCanciones];
     }
 
-    // Metodos
+    // MetodosA 
 }
