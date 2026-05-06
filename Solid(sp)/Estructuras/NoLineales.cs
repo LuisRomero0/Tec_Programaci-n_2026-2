@@ -1,6 +1,55 @@
 ﻿// SISTEMA DE ANALISIS DE TORMENTAS ELECTRICAS
 // Estructuras No Lineales
 
+// Crear descargas electricas como tuplas inmutables, con latitud, longitud y kilovoltios.
+
+var origen = new Descarga(19.43, -99.320, 320.5);
+var rama1 = new Descarga(25.12, -78.62, 285.6);
+var rama2 = new Descarga(19.3328, -99.1821, 210.7);
+var rama2a = new Descarga(19.15, -99.17, 95.3);
+
+// Construir el arbol de propagacion del rayo
+
+var analizador = new AnalizadorTormenta(origen);
+var nodoRama1 = analizador.Propagacion.Origen;
+analizador.Propagacion.Bifurcar(analizador.Propagacion.Origen, rama1);
+analizador.Propagacion.Bifurcar(analizador.Propagacion.Origen, rama2);
+var nodoRama2 = analizador.Propagacion.Origen.Ramas[1];
+analizador.Propagacion.Bifurcar(nodoRama2, rama2a);
+
+// Registrar sensores en la red
+analizador.Red.Registrar(new SensorCampoElectrico("CE-01", 19.42, -99.10));
+analizador.Red.Registrar(new SensorCampoElectrico("CE-02", 19.44, -99.14));
+analizador.Red.Registrar(new SensorCampoElectrico("CE-03", 19.43, -99.13));
+
+analizador.Red.Registrar(new SensorAcustico("AC-01", 19.40, -99.12));
+analizador.Red.Registrar(new SensorAcustico("AC-02", 19.47, -99.16));
+
+// Generar reporte de la tormenta
+
+analizador.GenerarReporte();
+
+// Sensor mas cercano a la descarga
+
+var cercano = analizador.DetectarMasCercano(rama2a);
+Console.WriteLine($"Sensor mas cercano a rama2a : {cercano.Id}");
+
+// Acceso por ID 
+var s = analizador.Red.ObtenerPorID("CE-02");
+Console.WriteLine($"Consulta directa: {s.Medir()}");
+
+// Excepcion
+
+try
+{
+    analizador.Red.ObtenerPorID("CE-05");
+}
+catch (SensorNoEncontradoException ex)
+{
+    Console.WriteLine($" [ERROR] {ex.Message}");
+}
+
+
 // Record - Tupla inmutable (Tupla constante)
 
 public record Descarga(double Latitud, double Longitud, double Kilovoltios)

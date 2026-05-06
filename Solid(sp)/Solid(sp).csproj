@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Estructuras\Arbol.cs" />
     <Compile Remove="Estructuras\Arreglos.cs" />
     <Compile Remove="Estructuras\Cola.cs" />
     <Compile Remove="Estructuras\Diccionario.cs" />
@@ -22,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Estructuras\Arbol.cs" />
     <None Include="Estructuras\Cola.cs" />
     <None Include="Estructuras\Diccionario.cs" />
     <None Include="Estructuras\Ejercicio.cs" />
