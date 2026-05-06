@@ -1,14 +1,14 @@
 ﻿// SISTEMA DE ANALISIS DE TORMENTAS ELECTRICAS
 // Estructuras No Lineales
 
-// Crear descargas electricas como tuplas inmutables, con latitud, longitud y kilovoltios.
+// Crear descargas eléctricas como tuplas inmutables, con latitud, longitud y kilovoltios.
 
 var origen = new Descarga(19.43, -99.320, 320.5);
 var rama1 = new Descarga(25.12, -78.62, 285.6);
 var rama2 = new Descarga(19.3328, -99.1821, 210.7);
 var rama2a = new Descarga(19.15, -99.17, 95.3);
 
-// Construir el arbol de propagacion del rayo
+// Construir el arbol de propagación del rayo
 
 var analizador = new AnalizadorTormenta(origen);
 var nodoRama1 = analizador.Propagacion.Origen;
