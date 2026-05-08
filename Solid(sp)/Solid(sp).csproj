@@ -16,6 +16,7 @@
     <Compile Remove="Estructuras\Ejercicio.cs" />
     <Compile Remove="Estructuras\ListaEnlazada.cs" />
     <Compile Remove="Estructuras\Listas.cs" />
+    <Compile Remove="Estructuras\NoLineales.cs" />
     <Compile Remove="Estructuras\Pilas.cs" />
     <Compile Remove="Estructuras\Tupla.cs" />
     <Compile Remove="NoSolid.cs" />
@@ -28,6 +29,7 @@
     <None Include="Estructuras\Diccionario.cs" />
     <None Include="Estructuras\Ejercicio.cs" />
     <None Include="Estructuras\ListaEnlazada.cs" />
+    <None Include="Estructuras\NoLineales.cs" />
     <None Include="Estructuras\Pilas.cs" />
   </ItemGroup>
 
