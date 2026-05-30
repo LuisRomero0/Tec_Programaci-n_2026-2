@@ -35,11 +35,9 @@ while (!salir)
             if (int.TryParse(Console.ReadLine(), out int cant)) robot.RecargarEnergia(cant);
             break;
         case 6:
-            // Ajustado al orden del PDF: velocidad primero, dirección después
             robot.Mover(20, "Adelante");
             break;
         case 7:
-            // Ajustado al orden del PDF: velocidad primero, dirección después
             robot.Mover(10, "Atras");
             break;
         case 8:

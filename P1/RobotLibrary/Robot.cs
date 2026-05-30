@@ -5,12 +5,11 @@ namespace RobotLibrary
     // Actividad 1: Clase Base Robot
     public class Robot
     {
-        // Campo privado de respaldo para evitar desbordamiento de pila (StackOverflowException)
         private int _energiaDisponible;
 
         public float Peso { get; set; }
         public string Modelo { get; set; }
-        public bool Estado { get; set; } // true = Encendido / false = Apagado
+        public bool Estado { get; set; } 
 
         public int EnergiaDisponible
         {
@@ -34,16 +33,16 @@ namespace RobotLibrary
             }
         }
 
-        // Constructor que permite inicializar todos los atributos
+        // Constructor completo para inicializar todos los atributos
         public Robot(float peso, string modelo, bool estado, int energiaDisponible)
         {
             Peso = peso;
             Modelo = modelo;
             Estado = estado;
-            EnergiaDisponible = energiaDisponible;
+            EnergiaDisponible = energiaDisponible; 
         }
 
-        // Constructor sin parámetros (Valores por defecto solicitados en la práctica)
+        // Constructor sin parámetros (Valores por defecto)
         public Robot()
         {
             Modelo = "Robot Genérico";
@@ -52,7 +51,7 @@ namespace RobotLibrary
             Estado = false;
         }
 
-        // MÉTODOS VIRTUALES (Permiten ser sobrescritos en la clase hija)
+        // MÉTODOS VIRTUALES: Permiten ser sobrescritos en la clase hija para añadir funcionalidad específica
         public virtual void Encender()
         {
             if (!Estado)
@@ -125,9 +124,9 @@ namespace RobotLibrary
         public string Direccion { get; set; }
         public int MotorIzquierdo { get; set; }
         public int MotorDerecho { get; set; }
-        public float SensorUltrasonico { get; set; } // Almacena el valor medido en cm
+        public float SensorUltrasonico { get; set; } 
 
-        // Constructor solicitado: Recibe parámetros base e inicializa los específicos por defecto
+        // Constructor: Recibe parámetros para la base e inicializa los atributos específicos
         public RobotMovil(float peso, string modelo, bool estado, int energiaDisponible, float valorInicialSensor)
             : base(peso, modelo, estado, energiaDisponible)
         {
@@ -138,24 +137,24 @@ namespace RobotLibrary
             SensorUltrasonico = valorInicialSensor;
         }
 
-        // SOBRESCRITURA DE MÉTODOS (Polimorfismo usando override)
+        // SOBRESCRITURA DE MÉTODOS 
         public override void Encender()
         {
-            base.Encender();
-            Console.WriteLine("[RobotMóvil]: Sistemas de tracción y 4 ruedas listos.");
+            base.Encender(); 
+            Console.WriteLine("[RobotMóvil]: Sistemas de tracción y 4 ruedas listos."); 
         }
 
         public override void Apagar()
         {
-            base.Apagar();
+            base.Apagar(); 
             Velocidad = 0;
             Direccion = "detenido";
-            Console.WriteLine("[RobotMóvil]: Sensores desactivados y motores desconectados.");
+            Console.WriteLine("[RobotMóvil]: Sensores desactivados y motores desconectados."); 
         }
 
         public override int VerificarEnergia()
         {
-            Console.WriteLine($"[Batería Li-Po]: Analizando celdas...");
+            Console.WriteLine($"[Batería Li-Po]: Analizando estado de las celdas..."); 
             return base.VerificarEnergia();
         }
 
@@ -166,17 +165,17 @@ namespace RobotLibrary
                 Console.WriteLine("No se puede recargar una cantidad negativa.");
                 return;
             }
-            base.RecargarEnergia(cantidad);
-            Console.WriteLine($"[Carga]: ¡Módulo de energía del RobotMóvil actualizado de forma segura!");
+            base.RecargarEnergia(cantidad); // Ejecuta la lógica base de la clase padre
+            Console.WriteLine($"[Carga]: ¡Módulo de energía del RobotMóvil actualizado de forma segura!"); 
         }
 
         public override void MostrarEstado()
         {
-            base.MostrarEstado();
-            Console.WriteLine($"-> Velocidad actual: {Velocidad} cm/s | Dirección: {Direccion}");
+            base.MostrarEstado(); 
+            Console.WriteLine($"-> Velocidad actual: {Velocidad} cm/s | Dirección: {Direccion}"); 
         }
 
-        // MÉTODOS PROPIOS Y ADICIONALES
+        // MÉTODOS PROPIOS DE LA CLASE DERIVADA
         public void ConsumirEnergia(int cantidad)
         {
             if (cantidad < 0) return;
@@ -184,12 +183,12 @@ namespace RobotLibrary
             Console.WriteLine($"Energía consumida: -{cantidad}%. Energía disponible: {EnergiaDisponible}%");
         }
 
-        // Firma ajustada al orden exacto del PDF: (velocidad, direccion)
+   
         public void Mover(float velocidad, string direccion)
         {
             if (!Estado)
             {
-                Console.WriteLine("El robot está apagado. Enciéndelo antes de realizar cualquier acción.");
+                Console.WriteLine("El robot está apagado. Enciéndelo antes de realizar cualquier movimiento.");
                 return;
             }
 
@@ -198,7 +197,6 @@ namespace RobotLibrary
 
             Console.WriteLine($"El robot se mueve hacia '{Direccion}' a una velocidad de {Velocidad} cm/s.");
 
-            // Consumo de energía dinámico basado en la velocidad asignada
             if (Velocidad > 0 && Velocidad < 25) ConsumirEnergia(5);
             else if (Velocidad >= 25 && Velocidad < 50) ConsumirEnergia(10);
             else if (Velocidad >= 50 && Velocidad < 75) ConsumirEnergia(15);
@@ -283,7 +281,6 @@ namespace RobotLibrary
                 return;
             }
             Random random = new Random();
-            // Simula una lectura real actualizando el valor del atributo en cm
             SensorUltrasonico = (float)(random.NextDouble() * 150);
             Console.WriteLine($"Lectura del Sensor Ultrasónico: {SensorUltrasonico:F2} cm.");
         }
