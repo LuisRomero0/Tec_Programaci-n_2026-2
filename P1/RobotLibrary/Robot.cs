@@ -1,37 +1,40 @@
-﻿
+﻿using System;
+
 namespace RobotLibrary
 {
-    // Atributos 
+    // Actividad 1: Clase Base Robot
     public class Robot
     {
+        // Campo privado de respaldo para evitar desbordamiento de pila (StackOverflowException)
+        private int _energiaDisponible;
+
         public float Peso { get; set; }
         public string Modelo { get; set; }
-        public bool Estado { get; set; }
+        public bool Estado { get; set; } // true = Encendido / false = Apagado
+
         public int EnergiaDisponible
         {
-
-            get { return EnergiaDisponible; }
-
+            get { return _energiaDisponible; }
             set
             {
                 if (value < 0)
                 {
                     Console.WriteLine("La energía no puede ser negativa. Se establece a 0.");
-                    EnergiaDisponible = 0;
+                    _energiaDisponible = 0;
                 }
                 else if (value > 100)
                 {
                     Console.WriteLine("La energía no puede exceder el 100%. Se establece a 100.");
-                    EnergiaDisponible = 100;
+                    _energiaDisponible = 100;
                 }
                 else
                 {
-                    EnergiaDisponible = value;
+                    _energiaDisponible = value;
                 }
             }
         }
 
-        // Constructor
+        // Constructor que permite inicializar todos los atributos
         public Robot(float peso, string modelo, bool estado, int energiaDisponible)
         {
             Peso = peso;
@@ -40,16 +43,17 @@ namespace RobotLibrary
             EnergiaDisponible = energiaDisponible;
         }
 
-        public Robot(float peso, string modelo, int energiaDisponible)
+        // Constructor sin parámetros (Valores por defecto solicitados en la práctica)
+        public Robot()
         {
-            Peso = 5;
-            Modelo = "Robot Generico";
+            Modelo = "Robot Genérico";
+            Peso = 5.0f;
             EnergiaDisponible = 100;
+            Estado = false;
         }
 
-        // Metodos 
-
-        public void Encender()
+        // MÉTODOS VIRTUALES (Permiten ser sobrescritos en la clase hija)
+        public virtual void Encender()
         {
             if (!Estado)
             {
@@ -62,7 +66,7 @@ namespace RobotLibrary
             }
         }
 
-        public void Apagar()
+        public virtual void Apagar()
         {
             if (Estado)
             {
@@ -75,12 +79,12 @@ namespace RobotLibrary
             }
         }
 
-        public int VerificarEnergia()
+        public virtual int VerificarEnergia()
         {
             return EnergiaDisponible;
         }
 
-        public void RecargarEnergia(int cantidad)
+        public virtual void RecargarEnergia(int cantidad)
         {
             if (cantidad < 0)
             {
@@ -88,110 +92,127 @@ namespace RobotLibrary
                 return;
             }
             EnergiaDisponible += cantidad;
-            if (EnergiaDisponible > 100)
-            {
-                EnergiaDisponible = 100; // Limitar a 100
-            }
-            Console.WriteLine($"Energía recargada. Energía disponible: {EnergiaDisponible}%");
+            Console.WriteLine($"Energía base modificada. Total: {EnergiaDisponible}%");
         }
 
-        public void MostrarEstado()
+        public virtual void MostrarEstado()
         {
-            Console.WriteLine($"El robot con Modelo: {Modelo}, se encuentra {(Estado ? "Encendido" : "Apagado")}");
+            Console.WriteLine($"El robot modelo {Modelo} está {(Estado ? "Encendido" : "Apagado")}.");
         }
 
-        public void MostrarInformacion()
+        public void MostrarInformation()
         {
-            Console.WriteLine($"Modelo: {Modelo}");
-            Console.WriteLine($"Peso: {Peso} kg");
+            Console.WriteLine($"Modelo: {Modelo} | Peso: {Peso} kg");
         }
     }
 
+    // Actividad 2: Clase Derivada RobotMovil
     public class RobotMovil : Robot
     {
-        // Atributos adicionales para RobotMovil
-        public float Velocidad { get; set; }
+        private float _velocidad;
+
+        public float Velocidad
+        {
+            get { return _velocidad; }
+            set
+            {
+                if (value < 0) _velocidad = 0;
+                else if (value > 100) _velocidad = 100;
+                else _velocidad = value;
+            }
+        }
+
         public string Direccion { get; set; }
         public int MotorIzquierdo { get; set; }
         public int MotorDerecho { get; set; }
-        public bool SensorUltrasonico { get; set; }
+        public float SensorUltrasonico { get; set; } // Almacena el valor medido en cm
 
-        // Metodo constructor para RobotMovil
-        public void ConsumirEnergia(int cantidad)
+        // Constructor solicitado: Recibe parámetros base e inicializa los específicos por defecto
+        public RobotMovil(float peso, string modelo, bool estado, int energiaDisponible, float valorInicialSensor)
+            : base(peso, modelo, estado, energiaDisponible)
+        {
+            Velocidad = 0;
+            Direccion = "detenido";
+            MotorIzquierdo = 1;
+            MotorDerecho = 1;
+            SensorUltrasonico = valorInicialSensor;
+        }
+
+        // SOBRESCRITURA DE MÉTODOS (Polimorfismo usando override)
+        public override void Encender()
+        {
+            base.Encender();
+            Console.WriteLine("[RobotMóvil]: Sistemas de tracción y 4 ruedas listos.");
+        }
+
+        public override void Apagar()
+        {
+            base.Apagar();
+            Velocidad = 0;
+            Direccion = "detenido";
+            Console.WriteLine("[RobotMóvil]: Sensores desactivados y motores desconectados.");
+        }
+
+        public override int VerificarEnergia()
+        {
+            Console.WriteLine($"[Batería Li-Po]: Analizando celdas...");
+            return base.VerificarEnergia();
+        }
+
+        public override void RecargarEnergia(int cantidad)
         {
             if (cantidad < 0)
             {
-                Console.WriteLine("No se puede consumir una cantidad negativa de energía.");
+                Console.WriteLine("No se puede recargar una cantidad negativa.");
                 return;
             }
-            EnergiaDisponible -= cantidad;
-            if (EnergiaDisponible < 0)
-            {
-                EnergiaDisponible = 0; // Limitar a 0
-            }
-            Console.WriteLine($"Energía consumida. Energía disponible: {EnergiaDisponible}%");
+            base.RecargarEnergia(cantidad);
+            Console.WriteLine($"[Carga]: ¡Módulo de energía del RobotMóvil actualizado de forma segura!");
         }
 
-        public void Mover(string direccion, float velocidad)
+        public override void MostrarEstado()
+        {
+            base.MostrarEstado();
+            Console.WriteLine($"-> Velocidad actual: {Velocidad} cm/s | Dirección: {Direccion}");
+        }
+
+        // MÉTODOS PROPIOS Y ADICIONALES
+        public void ConsumirEnergia(int cantidad)
+        {
+            if (cantidad < 0) return;
+            EnergiaDisponible -= cantidad;
+            Console.WriteLine($"Energía consumida: -{cantidad}%. Energía disponible: {EnergiaDisponible}%");
+        }
+
+        // Firma ajustada al orden exacto del PDF: (velocidad, direccion)
+        public void Mover(float velocidad, string direccion)
         {
             if (!Estado)
             {
-                Console.WriteLine("El robot está apagado. Enciéndelo para moverlo.");
+                Console.WriteLine("El robot está apagado. Enciéndelo antes de realizar cualquier acción.");
                 return;
             }
+
             Direccion = direccion;
             Velocidad = velocidad;
 
-            string option = Direccion switch
-            {
-                "Adelante" => "Adelante",
-                "Atras" => "Atras",
-                _ => "Desconocida"
-            };
+            Console.WriteLine($"El robot se mueve hacia '{Direccion}' a una velocidad de {Velocidad} cm/s.");
 
-            switch (option)
-            {
-                case "Adelante":
-                    Console.WriteLine($"El robot se mueve hacia adelante a una velocidad de {Velocidad} m/s.");
-                    break;
-                case "Atras":
-                    Console.WriteLine($"El robot se mueve hacia atrás a una velocidad de {Velocidad} m/s.");
-                    break;
-
-                default:
-                    Console.WriteLine("Dirección desconocida.");
-                    break;
-            }
-
-
-            Console.WriteLine($"El robot se mueve hacia {Direccion} a una velocidad de {Velocidad} m/s.");
-            // Metodo para consumir energía basado en la velocidad
-            switch (velocidad)
-            {
-                case > 0.0f and < 25.0f:
-                    ConsumirEnergia(5);
-                    break;
-                case >= 25.0f and < 50.0f:
-                    ConsumirEnergia(10);
-                    break;
-                case >= 50.0f and < 75.0f:
-                    ConsumirEnergia(15);
-                    break;
-                case >= 75.0f and <= 100.0f:
-                    ConsumirEnergia(20);
-                    break;
-                default:
-                    Console.WriteLine($"Velocidad fuera de rango o detenida: {velocidad} m/s.");
-                    break;
-            }
+            // Consumo de energía dinámico basado en la velocidad asignada
+            if (Velocidad > 0 && Velocidad < 25) ConsumirEnergia(5);
+            else if (Velocidad >= 25 && Velocidad < 50) ConsumirEnergia(10);
+            else if (Velocidad >= 50 && Velocidad < 75) ConsumirEnergia(15);
+            else if (Velocidad >= 75 && Velocidad <= 100) ConsumirEnergia(20);
         }
 
         public void Detener()
         {
             Velocidad = 0;
-            Direccion = "Detenido";
-            Console.WriteLine("El robot se ha detenido.");
-            ConsumirEnergia(2); // Consumir energía por detenerse
+            Direccion = "detenido";
+            MotorIzquierdo = 0;
+            MotorDerecho = 0;
+            Console.WriteLine("El robot se ha detenido por completo.");
+            ConsumirEnergia(2);
         }
 
         public void GiroPorDiferencia(string direccion)
@@ -201,22 +222,27 @@ namespace RobotLibrary
                 Console.WriteLine("El robot está apagado. Enciéndelo para realizar un giro.");
                 return;
             }
-            switch (direccion)
-            {
-                case "Izquierda":
-                    MotorIzquierdo = 0; // Detener el motor izquierdo
-                    Console.WriteLine("El robot gira a la izquierda utilizando el motor derecho.");
 
-                    break;
-                case "Derecha":
-                    MotorDerecho = 0; // Detener el motor derecho
-                    Console.WriteLine("El robot gira a la derecha utilizando el motor izquierdo.");
-                    break;
-                default:
-                    Console.WriteLine("Dirección de giro desconocida.");
-                    break;
+            if (direccion.Equals("Izquierda", StringComparison.OrdinalIgnoreCase))
+            {
+                MotorIzquierdo = 0;
+                MotorDerecho = 1;
+                Direccion = "Girando a la Izquierda (Curvo)";
+                Console.WriteLine("Giro diferencial: Motor izquierdo detenido. Girando a la izquierda.");
             }
-            ConsumirEnergia(5); // Consumir energía por el giro
+            else if (direccion.Equals("Derecha", StringComparison.OrdinalIgnoreCase))
+            {
+                MotorIzquierdo = 1;
+                MotorDerecho = 0;
+                Direccion = "Girando a la Derecha (Curvo)";
+                Console.WriteLine("Giro diferencial: Motor derecho detenido. Girando a la derecha.");
+            }
+            else
+            {
+                Console.WriteLine("Dirección de giro no válida.");
+                return;
+            }
+            ConsumirEnergia(5);
         }
 
         public void GiroPorContrarrotacion(string direccion)
@@ -226,86 +252,64 @@ namespace RobotLibrary
                 Console.WriteLine("El robot está apagado. Enciéndelo para realizar un giro.");
                 return;
             }
-            switch (direccion)
+
+            if (direccion.Equals("Izquierda", StringComparison.OrdinalIgnoreCase))
             {
-                case "Izquierda":
-                    MotorIzquierdo = -1; // Invertir el motor izquierdo
-                    MotorDerecho = 1; // Mantener el motor derecho en dirección normal
-                    Console.WriteLine("El robot gira a la izquierda por contrarrotación.");
-                    break;
-                case "Derecha":
-                    MotorIzquierdo = 1; // Mantener el motor izquierdo en dirección normal
-                    MotorDerecho = -1; // Invertir el motor derecho
-                    Console.WriteLine("El robot gira a la derecha por contrarrotación.");
-                    break;
-                default:
-                    Console.WriteLine("Dirección de giro desconocida.");
-                    break;
+                MotorIzquierdo = -1;
+                MotorDerecho = 1;
+                Direccion = "Contrarrotación Izquierda";
+                Console.WriteLine("Giro cerrado: Motor izquierdo invierte sentido. Girando a la izquierda.");
             }
-            ConsumirEnergia(10); // Consumir energía por el giro
+            else if (direccion.Equals("Derecha", StringComparison.OrdinalIgnoreCase))
+            {
+                MotorIzquierdo = 1;
+                MotorDerecho = -1;
+                Direccion = "Contrarrotación Derecha";
+                Console.WriteLine("Giro cerrado: Motor derecho invierte sentido. Girando a la derecha.");
+            }
+            else
+            {
+                Console.WriteLine("Dirección de giro no válida.");
+                return;
+            }
+            ConsumirEnergia(10);
         }
 
         public void ObtenerDistanciaSensorUltrasonico()
         {
             if (!Estado)
             {
-                Console.WriteLine("El robot está apagado. Enciéndelo para obtener la distancia del sensor ultrasonico.");
+                Console.WriteLine("El robot está apagado. Enciéndelo para usar el sensor.");
                 return;
             }
-            if (SensorUltrasonico)
-            {
-                Random random = new Random();
-                float distancia = (float)(random.NextDouble() * 100); // Simula una distancia entre 0 y 100 cm
-                Console.WriteLine($"Distancia medida por el sensor ultrasonico: {distancia} cm.");
-            }
-            else
-            {
-                Console.WriteLine("El sensor ultrasonico no está activo.");
-            }
+            Random random = new Random();
+            // Simula una lectura real actualizando el valor del atributo en cm
+            SensorUltrasonico = (float)(random.NextDouble() * 150);
+            Console.WriteLine($"Lectura del Sensor Ultrasónico: {SensorUltrasonico:F2} cm.");
         }
 
         public void AumentarVelocidad(int incremento)
         {
             if (!Estado)
             {
-                Console.WriteLine("El robot está apagado. Enciéndelo para aumentar la velocidad.");
+                Console.WriteLine("El robot está apagado.");
                 return;
             }
             Velocidad += incremento;
-            if (Velocidad > 100)
-            {
-                Velocidad = 100; // Limitar a 100
-            }
-            Console.WriteLine($"Velocidad aumentada. Velocidad actual: {Velocidad} m/s.");
-            ConsumirEnergia(5); // Consumir energía por aumentar la velocidad
+            Console.WriteLine($"Velocidad aumentada. Velocidad actual: {Velocidad} cm/s.");
+            ConsumirEnergia(5);
         }
 
         public void DisminuirVelocidad(int decremento)
         {
             if (!Estado)
             {
-                Console.WriteLine("El robot está apagado. Enciéndelo para disminuir la velocidad.");
+                Console.WriteLine("El robot está apagado.");
                 return;
             }
             Velocidad -= decremento;
-            if (Velocidad < 0)
-            {
-                Velocidad = 0; // Limitar a 0
-            }
-            Console.WriteLine($"Velocidad disminuida. Velocidad actual: {Velocidad} m/s.");
-            ConsumirEnergia(2); // Consumir energía por disminuir la velocidad
-        }
-
-        // Constructor que llama al constructor de la clase base Robot
-        public RobotMovil(float peso, string modelo, bool estado, int energiaDisponible, float velocidad, 
-        string direccion, int motorIzquierdo, int motorDerecho, float sensorUltrasonico)
-            : base(peso, modelo, estado, energiaDisponible)
-        {
-            Velocidad = 0;
-            Direccion = "Detenido";
-            MotorIzquierdo = motorIzquierdo;
-            MotorDerecho = motorDerecho;
-            SensorUltrasonico = true;
+            Console.WriteLine($"Velocidad reducida. Velocidad actual: {Velocidad} cm/s.");
+            ConsumirEnergia(2);
         }
     }
 }

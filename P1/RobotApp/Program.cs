@@ -1,59 +1,62 @@
 using System;
 using RobotLibrary;
 
-RobotMovil robot = new RobotMovil(15.0f, "RX-200", false, 95, 1, 1);
-
+// Pasamos 100 como valor inicial para la simulación de distancia del sensor
+RobotMovil robot = new RobotMovil(15.0f, "RX-200", false, 95, 100f);
 bool salir = false;
+
 while (!salir)
 {
     Console.WriteLine("\n--- MENÚ ROBOT MÓVIL ---");
     Console.WriteLine("1. Encender robot | 2. Apagar robot | 3. Mostrar estado | 4. Verificar energia | 5. Recargar energia");
-    Console.WriteLine("6. Mover Adelante | 7. Mover atras | 8. Giro por diferencia | 9. Giro por contrarrotacion"); 
+    Console.WriteLine("6. Mover Adelante | 7. Mover atras | 8. Giro por diferencia | 9. Giro por contrarrotacion");
     Console.WriteLine("10. Detener Robot | 11. Medir distancia con sensor Ultrasonico | 12. Aumentar velocidad");
     Console.WriteLine("13. Reducir velocidad | 0. Salir");
     Console.Write("Selecciona una opción: ");
 
     if (!int.TryParse(Console.ReadLine(), out int opcion)) continue;
 
-        switch (opcion)
+    switch (opcion)
     {
-        case 1: 
-            robot.Encender(); 
+        case 1:
+            robot.Encender();
             break;
-        case 2: 
-            robot.Apagar(); 
+        case 2:
+            robot.Apagar();
             break;
-        case 3: 
-            robot.MostrarEstado(); 
+        case 3:
+            robot.MostrarEstado();
             break;
         case 4:
-            Console.WriteLine($"Energía actual: {robot.EnergiaDisponible}%");
+            Console.WriteLine($"Energía actual: {robot.VerificarEnergia()}%");
             break;
-        case 5: 
+        case 5:
             Console.Write("Cantidad a recargar: ");
             if (int.TryParse(Console.ReadLine(), out int cant)) robot.RecargarEnergia(cant);
             break;
-        case 6: 
-            robot.Mover("Adelante", 20); 
+        case 6:
+            // Ajustado al orden del PDF: velocidad primero, dirección después
+            robot.Mover(20, "Adelante");
             break;
-        case 7: 
-            robot.Mover("Atras", 10); 
+        case 7:
+            // Ajustado al orden del PDF: velocidad primero, dirección después
+            robot.Mover(10, "Atras");
             break;
         case 8:
             Console.Write("Dirección para Giro Diferencial (Izquierda/Derecha): ");
             robot.GiroPorDiferencia(Console.ReadLine());
             break;
-        case 9: 
+        case 9:
             Console.Write("Dirección para Giro Contrarrotación (Izquierda/Derecha): ");
             robot.GiroPorContrarrotacion(Console.ReadLine());
             break;
-        case 10: 
-            robot.Detener(); 
+        case 10:
+            robot.Detener();
             break;
         case 11:
             robot.ObtenerDistanciaSensorUltrasonico();
             break;
-        case 12: 
+        case 12:
             Console.Write("Cantidad para aumentar velocidad: ");
             if (int.TryParse(Console.ReadLine(), out int inc)) robot.AumentarVelocidad(inc);
             break;
@@ -61,10 +64,11 @@ while (!salir)
             Console.Write("Cantidad para reducir velocidad: ");
             if (int.TryParse(Console.ReadLine(), out int dec)) robot.DisminuirVelocidad(dec);
             break;
-        case 0: 
-            salir = true; 
+        case 0:
+            salir = true;
             break;
-        default: 
-            Console.WriteLine("Opción no válida."); 
+        default:
+            Console.WriteLine("Opción no válida.");
             break;
     }
+}
